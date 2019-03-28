@@ -1,12 +1,11 @@
 import os
 import time
+import pickle
 from PrintGraphicsUI import PrintGraphicsUI
 from Service import Member
 from Service import MemberList
 from Service import Sport
 from Service import SportList
-
-import pickle
 
 
 class MainMenuUI:
@@ -45,7 +44,6 @@ class MainMenuUI:
 
             PrintGraphicsUI.print_intro()
             #Use Pickle to load saved data. If No savefile has been made -> error. 
-
 
             action = input("What would you like to do?\n")
             #Register new sport
@@ -98,16 +96,15 @@ class MainMenuUI:
     def print_all_members(self):
         
         all_members = self.MemberList.get_members_ordered_by_name()
-
-        if all_members == []: print("No members have been registered!")
         lower = 0; upper = 8; action = ""; loop = True; highest = len(all_members)
 
         while loop:
             os.system('cls' if os.name == 'nt' else 'clear')
-
-            print("\Members:")
-            print("-"*106)
-            print()
+            if all_members == []: print("No members have been registered!")
+            else: 
+                print("\Members:")
+                print("-"*106)
+                print()
             for index, item in enumerate(all_members): 
                 if index in range(lower,upper):
                     print ("{:4s} {:}".format(str(index+1).zfill(3), item))

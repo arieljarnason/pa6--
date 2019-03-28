@@ -13,7 +13,6 @@ class MemberRepo:
         pickle.dump(phone_map, open("saves/phone_map.p", "wb"))
         pickle.dump(email_map, open("saves/email_map.p", "wb"))
 
-
     def load():
         try: 
             id_map = pickle.load(open("saves/id_map.p", "rb"))

@@ -49,8 +49,6 @@ class MemberList:
         self.email_map = SortedDict()
 
         self.unique_id = int(MemberRepo.load_un_id())
-        # self.unique_id = 1
-
 
     def test(self):
         self.add_new_member(Member("Karl Bernharðsson", "898-8787", "1@sport.is", 1989, ["Football", "Volleyball"]))
@@ -78,10 +76,11 @@ class MemberList:
             try:
                 member_birthyear = int(input("Input member Birthyear (1999): "))
                 continues = False
-                new_member = Member(member_name, member_phone, member_email, member_birthyear, self.unique_id)
-                self.add_new_member(new_member)
             except ValueError:
                 print("Error! Only write a number!")
+
+        new_member = Member(member_name, member_phone, member_email, member_birthyear,None, self.unique_id)
+        self.add_new_member(new_member)
 
 
     def add_new_member(self, new_member):
@@ -90,11 +89,14 @@ class MemberList:
         self.phone_map[new_member.phone] = self.unique_id
         self.email_map[new_member.email] = self.unique_id
 
+
         print("{} added to system. You will be redirected to main menu.".format(new_member.name))
         self.unique_id += 1
         MemberRepo.save(self.id_map, self.name_map, self.phone_map, self.email_map)
         MemberRepo.save_un_id(self.unique_id)
         time.sleep(0.1)
+
+
     
 
     def search(self, search_term):
@@ -166,8 +168,9 @@ class MemberList:
     def load_all_files(self):
         try:
             self.id_map, self.name_map, self.phone_map, self.email_map = MemberRepo.load()
-            # print(self.id_map)
-            # print(self.name_map)
+            print(self.id_map)
+            print(self.name_map)
+
         except TypeError:
             print("TypeError")
     
@@ -185,7 +188,7 @@ class Sport:
     def __init__(
         self, 
         sport_name, 
-        sport_members = []):
+        sport_members = None:
 
         self.sport_name = sport_name
         self.sport_members = sport_members

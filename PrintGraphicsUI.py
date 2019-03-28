@@ -6,7 +6,6 @@ class PrintGraphicsUI:
         with open("texts/intro.txt", encoding = "utf-8") as logo:
             print(logo.read()); logo.seek(0)
 
-        
     def print_sel_error():
         print("Error, please select from list")
         print()
@@ -14,13 +13,12 @@ class PrintGraphicsUI:
 
     def make_string(list_of_sports):
         sport_string = ""
-        # try:
-        for item in list_of_sports:
-            sport_string += "{} ".format(item)
-        return sport_string
-        # except TypeError:
-        #     pass
-        
+        try:
+            for item in list_of_sports:
+                sport_string += "{} ".format(item)
+            return sport_string
+        except TypeError:
+            return sport_string
 
     def member_profile(found_member):
         sport_string = PrintGraphicsUI.make_string(found_member.sports)
