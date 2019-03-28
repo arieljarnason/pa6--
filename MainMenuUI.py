@@ -10,7 +10,6 @@ from Service import SportList
 
 class MainMenuUI:
     def __init__(self):
-        # self.default_save_file = "SportStudSave01.p"
         self.MemberList = MemberList()
         self.SportList = SportList()
 
@@ -23,8 +22,8 @@ class MainMenuUI:
         # 
         # 
         # TESTCASE:
-        # self.MemberList.test()
-        # self.SportList.test()
+        self.MemberList.test()
+        self.SportList.test()
         #TESTCASE:
         #
         #
@@ -92,7 +91,7 @@ class MainMenuUI:
             #List all sports - select sport and see detailed info(list of users)
             elif action == "8":
                 """Prints list of all sports"""
-                pass
+                self.print_all_sports()
 
             # 9. List all groups
             elif action == "9":
@@ -169,7 +168,7 @@ class MainMenuUI:
         while action != 0:
             action = input("\n1. Edit member 2. Remove member 0. Exit\n")
             if action == "1":
-                print("1. Name 2. Phone no 3. Email 4. Birthyear 5. Sport registration 0. Exit")
+                print("1. Name 2. Phone no 3. Email 4. Birthyear 5. Sport registration 6. Groups 0. Exit")
                 print("What would you like to edit?")
 
                 new_info = self.MemberList.member_edit(found_member)
@@ -192,5 +191,48 @@ class MainMenuUI:
                 PrintGraphicsUI.print_sel_error()
                 PrintGraphicsUI.member_profile(found_member)
 
-# m = MainMenuUI
-# m.main()
+    def print_all_sports(self):
+        
+        all_sports = self.SportList.get_sports()
+        # print(all_sports)
+        loop = True
+
+        while loop:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            if all_sports == []: print("No sports have been registered!")
+            else: 
+                print("\Sports:")
+                print("-"*106)
+                print()
+            for index, item in enumerate(all_sports): 
+                print("{:4s} {:}".format(str(index+1).zfill(2), item))
+            print()
+            print("-"*106)
+
+            action = input("\n{}\n{}\n{}\n{}\n{}\n".format(
+                "1. Pick from list","2. Up list",
+                "3. Down list","4. Print all members",
+                "0. Exit"))
+            
+        #     if action == "1": #Choose to pick a member by nr
+        #         loop = False
+        #         self.pick_a_member(all_members)
+
+
+        #     elif action == "2": #Go up
+        #         if lower > 0: lower -= 8
+        #         if upper > 8: upper -= 8
+        #     elif action == "3": #Go down
+        #         if upper >= highest:
+        #             print("There are no more members!")
+        #             time.sleep(1.0)
+        #         else:
+        #             lower += 8; upper += 8
+        #     elif action == "4": #Show all
+        #         lower = 0; upper = highest
+        #     elif action == "0": #Exit
+        #         loop = False
+        #     else: 
+        #         PrintGraphicsUI.print_sel_error()
+
+

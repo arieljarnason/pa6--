@@ -83,6 +83,7 @@ class MemberList:
 
         new_member = Member(member_name, member_phone, member_email, member_birthyear,None, None, self.unique_id)
         self.add_new_member(new_member)
+        # self.sport_map[new_member.sports]
 
 
     def add_new_member(self, new_member):
@@ -149,9 +150,13 @@ class MemberList:
                     print("1. Name 2. Phone no 3. Email 4. Birthyear 5. Sport registration 0. Exit")
                     print("What would you like to edit?")
 
-
             #If 5 - change sports
+            elif action == "5":
+                pass
 
+            #If 6 - change groups
+            elif action == "6":
+                pass
     
     def member_delete(self, selected_member):
         id = self.name_map[selected_member.name]
@@ -216,9 +221,9 @@ class SportList:
         SportsRepo.save(self.sport_map)
 
     def test(self):
-        self.add_new_sport(Sport("Football"))
-        self.add_new_sport(Sport("Volleyball"))
-        self.add_new_sport(Sport("Chess"))
+        self.add_new_sport(Sport("Football", [5, 7, 12, 13]))
+        self.add_new_sport(Sport("Volleyball", [2, 4, 5, 12]))
+        self.add_new_sport(Sport("Chess", [1, 3, 10, 11]))
 
     def save_all_files(self):
         #Temporary save solution - find way to put all in one dict? 
@@ -228,9 +233,15 @@ class SportList:
         try:
             self.sport_map = SportsRepo.load()
             # print(self.sport_map)
-           
         except TypeError:
             print("TypeError")
+        
+    def get_sports(self):
+        ordered_list = []
+        for sport_object in self.sport_map.keys():
+            ordered_list.append(sport_object)
+        return ordered_list
+        # print(self.SportList.sport_map)
 
 
 
