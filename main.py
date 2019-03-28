@@ -5,5 +5,4 @@ def main():
     menu = MainMenuUI()
     menu.main()
 
-
 main()

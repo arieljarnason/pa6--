@@ -1,7 +1,17 @@
 TODO:
 
-- Tengja sport objects við lista af notendum
-- Tengja sport við groups
+# - Tengja sport objects við lista af notendum
+
+
+    # !!!--When viewing details for a sport the user 
+    # should see a list of groups---!!!
+
+
+# - Tengja sport við groups
+
+Fix so when new group / sport / user is made, it connects correctly and saves 
+correctly.
+
 
 - prenta lista af sport objects og str: 
 name of sport
@@ -14,20 +24,23 @@ name of sport
 
 - Groups:
 User shall be able to register groups in each sport
-    Variables:
-    --Group name
-    --Age range
+#     Variables:
+#     --Group name
+#     --Age range
 
     --When signing a user up for a sport a group must be selected
     --Only groups for correct age available
     --Possible to sign into more than one group, if age allows
-    --When viewing details for a sport the user 
-    should see a list of groups
+    
+
+
 
     --User should be able to select a group and see details
-    --List of users in a group
-    --When viewing details on a user the sport and 
-    --group should be displayed in list
+    # --List of users in a group
+    # --When viewing details on a user the sport and 
+    # --group should be displayed in list
+
+
 
 
 - Undo functionality:

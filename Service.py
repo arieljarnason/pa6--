@@ -3,44 +3,19 @@ import datetime
 import os
 from Repo import MemberRepo
 from Repo import SportsRepo
+from Repo import GroupRepo
+from Models import Sport
+from Models import Group
+from Models import Member
 from PrintGraphicsUI import PrintGraphicsUI
 from sortedcontainers import SortedDict
 
-class Member:
-    """Makes the member object"""
-    def __init__(
-        self, 
-        name, 
-        phone, 
-        email, 
-        birthyear, 
-        sports = None,
-        groups = None,
-        unique_id = None 
-        ):
+# 
+# 
+#-----------------------MEMBERLIST-----------------
+#
+#   
 
-        self.name = name
-        self.phone = phone
-        self.email = email
-        self.birthyear = birthyear
-        self.sports = sports
-        self.groups = groups
-        self.unique_id = unique_id
-    
-    def __str__(self):
-        try:
-            sport_string = PrintGraphicsUI.make_string(self.sports)
-        except TypeError:
-            sport_string = ""
-            
-        age = (datetime.date.today().year) - self.birthyear
-        
-        return "{:<26s} Age: {} Ph. No: {:12s} Email: {:<12s} Sports: {:>4}".format(
-            self.name,
-            age,
-            self.phone,
-            self.email,
-            sport_string)
 
 class MemberList:
 
@@ -51,39 +26,6 @@ class MemberList:
         self.email_map = SortedDict()
 
         self.unique_id = int(MemberRepo.load_un_id())
-
-    def test(self):
-        self.add_new_member(Member("Karl Bernharðsson", "898-8787", "1@sport.is", 1989, ["Football", "Volleyball"]))
-        self.add_new_member(Member("Sigurður Sigurðsson", "844-8484", "2@sport.is", 1994, ["Football"]))
-        self.add_new_member(Member("Magnús Friðriksson", "898-4111", "3@sport.is", 1993, ["Football"]))
-        self.add_new_member(Member("Elísabet Skaargard", "778-1155", "4@sport.is", 1992, ["Volleyball"]))
-        self.add_new_member(Member("Knútur Olsen", "877-1588", "5@sport.is", 1993))
-        self.add_new_member(Member("Sigrún Tinnudóttir", "677-8877", "6@sport.is", 1992, ["Football", "Volleyball"]))
-        self.add_new_member(Member("Jón Karlsson", "661-8488", "7@sport.is", 1993, ["Volleyball"]))
-        self.add_new_member(Member("Geir Sigurður Magnússon", "771-2121", "8@sport.is", 1995, ["Chess"]))
-        self.add_new_member(Member("Bertrand Filibusarson", "771-2121", "8@sport.is", 1995, ["Chess"]))
-        self.add_new_member(Member("Not0", "771-2121", "8@sport.is", 1998))
-        self.add_new_member(Member("Not1", "771-2121", "8@sport.is", 1994))
-        self.add_new_member(Member("Not2", "771-2121", "8@sport.is", 1992, ["Chess"]))
-        self.add_new_member(Member("Not3", "771-2121", "8@sport.is", 1997, ["Chess"]))
-
-
-    def new_member(self):
-        member_name = input("Input member Name (Jón Jónsson): ")
-        member_phone = input("Input member Phone (898-8989): ")
-        member_email = input("Input member Email (email@email.com): ")
-        
-        continues = True
-        while continues:
-            try:
-                member_birthyear = int(input("Input member Birthyear (1999): "))
-                continues = False
-            except ValueError:
-                print("Error! Only write a number!")
-
-        new_member = Member(member_name, member_phone, member_email, member_birthyear,None, None, self.unique_id)
-        self.add_new_member(new_member)
-        # self.sport_map[new_member.sports]
 
 
     def add_new_member(self, new_member):
@@ -99,8 +41,23 @@ class MemberList:
         MemberRepo.save_un_id(self.unique_id)
         time.sleep(0.1)
 
+    def new_member(self):
+        member_name = input("Input member Name (Jón Jónsson): ")
+        member_phone = input("Input member Phone (898-8989): ")
+        member_email = input("Input member Email (email@email.com): ")
+        
+        continues = True
+        while continues:
+            try:
+                member_birthyear = int(input("Input member Birthyear (1999): "))
+                continues = False
+            except ValueError:
+                print("Error! Only write a number!")
 
-    
+        new_member = Member(member_name, member_phone, member_email, member_birthyear,[], None, self.unique_id)
+        self.add_new_member(new_member)
+        # self.sport_map[new_member.sports]
+
 
     def search(self, search_term):
         if search_term in self.name_map:
@@ -176,7 +133,7 @@ class MemberList:
         try:
             self.id_map, self.name_map, self.phone_map, self.email_map = MemberRepo.load()
             print(self.id_map)
-            print(self.name_map)
+            # print(self.name_map)
 
         except TypeError:
             print("TypeError")
@@ -187,23 +144,27 @@ class MemberList:
             ordered_list.append(self.id_map[self.name_map[name]])
         return ordered_list
 
-    
+    def test(self):
+        self.add_new_member(Member("Karl Bernharðsson", "898-8787", "1@sport.is", 1989, [], [], 1))
+        self.add_new_member(Member("Sigurður Sigurðsson", "844-8484", "2@sport.is", 1994, [], [], 2))
+        self.add_new_member(Member("Magnús Friðriksson", "898-4111", "3@sport.is", 1993, [], [], 3))
+        self.add_new_member(Member("Elísabet Skaargard", "778-1155", "4@sport.is", 1992, [], [], 4))
+        self.add_new_member(Member("Knútur Olsen", "877-1588", "5@sport.is", 1993, [], [], 5))
+        self.add_new_member(Member("Sigrún Tinnudóttir", "677-8877", "6@sport.is", 1992, [], [], 6))
+        self.add_new_member(Member("Jón Karlsson", "661-8488", "7@sport.is", 1993, [], [], 7))
+        self.add_new_member(Member("Geir Sigurður Magnússon", "771-2121", "8@sport.is", 1995, [], [], 8))
+        self.add_new_member(Member("Bertrand Filibusarson", "771-2121", "8@sport.is", 1995, [], [], 9))
+        self.add_new_member(Member("Not0", "771-2121", "8@sport.is", 1998, [], [], 10))
+        self.add_new_member(Member("Not1", "771-2121", "8@sport.is", 1994, [], [], 11))
+        self.add_new_member(Member("Not2", "771-2121", "8@sport.is", 1992, [], [], 12))
+        self.add_new_member(Member("Not3", "771-2121", "8@sport.is", 1997, [], [], 13))
+        
+# # 
+# # 
+# #-----------------------SPORTLIST-----------------
+# #
+# #   
 
-
-class Sport:
-    """Makes the Sport object"""
-    def __init__(
-        self, 
-        sport_name, 
-        sport_members = None
-        ):
-
-        self.sport_name = sport_name
-        self.sport_members = sport_members
-    
-
-    def __str__(self):
-        return "{} ({})".format(self.sport_name, len(self.sport_members))
 
 
 class SportList:
@@ -216,33 +177,90 @@ class SportList:
         self.add_new_sport(new_sport)
 
     def add_new_sport(self, new_sport):
-        self.sport_map[new_sport.sport_name] = new_sport.sport_members
+        #Makes sport map that has key: [name] = value: sport_object
+        self.sport_map[new_sport.sport_name] = new_sport
         print("{} added to system. You will be redirected to main menu.".format(new_sport.sport_name))
         SportsRepo.save(self.sport_map)
 
-    def test(self):
-        self.add_new_sport(Sport("Football", [5, 7, 12, 13]))
-        self.add_new_sport(Sport("Volleyball", [2, 4, 5, 12]))
-        self.add_new_sport(Sport("Chess", [1, 3, 10, 11]))
 
     def save_all_files(self):
-        #Temporary save solution - find way to put all in one dict? 
         SportsRepo.save(self.sport_map)
 
     def load_all_files(self):
         try:
             self.sport_map = SportsRepo.load()
-            # print(self.sport_map)
+            print(self.sport_map)
         except TypeError:
             print("TypeError")
         
     def get_sports(self):
         ordered_list = []
-        for sport_object in self.sport_map.keys():
-            ordered_list.append(sport_object)
+        for sport_object in self.sport_map:
+            ordered_list.append(self.sport_map[sport_object])
         return ordered_list
-        # print(self.SportList.sport_map)
+        # print(self.sport_map)
+        # return self.sport_map
+
+    def test(self):
+        self.add_new_sport(Sport("Football", [], []))
+        self.add_new_sport(Sport("Volleyball", [], []))
+        self.add_new_sport(Sport("Chess", [], []))
+
+# 
+# 
+#-----------------------GROUPLIST-----------------
+#
+#   
 
 
 
+class GroupList:
+    """Makes a list of the Groups and functions to work with groups"""
+
+    def __init__(self):
+        self.group_map = SortedDict()
+
+    def create_new_group(self):
+        group_name = input("Input group name: ")
+        try:
+            group_size = input("Decide how big the group shall be: (number) ")
+            #tuple of two integers, ages from (12,14)
+            group_age_range_l = int(input("Ages ranging from: (number) "))
+            group_age_range_h = int(input("to: (number) "))
+
+            group_age_range = (group_age_range_l, group_age_range_h)
+
+        except (ValueError, TypeError, IndexError):
+            PrintGraphicsUI.print_sel_error()
+        
+        new_group = Group(group_name, group_size, group_age_range)
+        self.add_new_group(new_group)
+
+    def add_new_group(self, new_group):
+        self.group_map[new_group.group_name] = new_group
+        GroupRepo.save(self.group_map)
+        print("Group was added. Returning to Main Menu.")
+        time.sleep(0.4)
+
+    def get_groups(self):
+        ordered_list = []
+        for group_object in self.group_map:
+            ordered_list.append(self.group_map[group_object])
+        return ordered_list
+
+    def save_all_files(self):
+        GroupRepo.save(self.group_map)
+
+    def load_all_files(self):
+        try:
+            self.group_map = GroupRepo.load()
+            print(self.group_map)
+        except TypeError:
+            print("TypeError")
+
+
+    def test(self):
+        self.add_new_group(Group("Fjölnir", 10, (10,12), None, [], []))
+        self.add_new_group(Group("Ármann", 12, (12,14), None, [], []))
+        self.add_new_group(Group("Breiðablik", 6, (20,26), None, [], []))
 
