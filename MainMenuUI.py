@@ -23,8 +23,8 @@ class MainMenuUI:
         # 
         # 
         # TESTCASE:
-        self.MemberList.test()
-        self.SportList.test()
+        # self.MemberList.test()
+        # self.SportList.test()
         #TESTCASE:
         #
         #
@@ -46,24 +46,33 @@ class MainMenuUI:
             #Use Pickle to load saved data. If No savefile has been made -> error. 
 
             action = input("What would you like to do?\n")
-            #Register new sport
+            #1. Register new sport
             if action == "1":
                 """Goes to service->Sport class and makes new Sport object
                 checks if that Sport already exists"""
                 self.SportList.new_sport()
 
-            #Register new member
+            #2. Register new member
             elif action == "2":
                 """Goes to service->Member class, makes new Member object
                 Gives each member a unique ID no for easy listing"""
                 self.MemberList.new_member()
 
-            #Register new group
+            #3. Register new group
             elif action == "3":
                 pass
-
-            #Find member - get data screen up
+            
+            #4. Register member into sport
             elif action == "4":
+                pass
+            
+            #5. Register member into group
+            elif action == "5":
+                """Register member in sport"""
+                pass
+
+            #6. Find member - get data screen up
+            elif action == "6":
                 """Goes to service -> returns user by input name"""
                 found_member = None
                 search_term = input("Please write name, phone no(xxx-xxxx), email or birthyear(xxxx) of member: ")
@@ -75,20 +84,24 @@ class MainMenuUI:
                 else: 
                     PrintGraphicsUI.print_not_found()
 
-            #List all members - select member and see info, and all sport
-            elif action == "5":
+            #7. List all members - select member and see info, and all sport
+            elif action == "7":
                 """Prints list of all members"""
                 self.print_all_members()
 
             #List all sports - select sport and see detailed info(list of users)
-            elif action == "6":
+            elif action == "8":
                 """Prints list of all sports"""
                 pass
-            
-            #Save & Exit
+
+            # 9. List all groups
+            elif action == "9":
+                """Lists all groups"""
+                pass
+
+            #0. Save & Exit
             elif action == "0":
                 self.MemberList.save_all_files()
-                # pass
 
             else:
                 PrintGraphicsUI.print_sel_error()

@@ -15,6 +15,7 @@ class Member:
         email, 
         birthyear, 
         sports = None,
+        groups = None,
         unique_id = None 
         ):
 
@@ -23,6 +24,7 @@ class Member:
         self.email = email
         self.birthyear = birthyear
         self.sports = sports
+        self.groups = groups
         self.unique_id = unique_id
     
     def __str__(self):
@@ -79,7 +81,7 @@ class MemberList:
             except ValueError:
                 print("Error! Only write a number!")
 
-        new_member = Member(member_name, member_phone, member_email, member_birthyear,None, self.unique_id)
+        new_member = Member(member_name, member_phone, member_email, member_birthyear,None, None, self.unique_id)
         self.add_new_member(new_member)
 
 
@@ -188,11 +190,13 @@ class Sport:
     def __init__(
         self, 
         sport_name, 
-        sport_members = None:
+        sport_members = None
+        ):
 
         self.sport_name = sport_name
         self.sport_members = sport_members
     
+
     def __str__(self):
         return "{} ({})".format(self.sport_name, len(self.sport_members))
 

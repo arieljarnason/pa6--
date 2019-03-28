@@ -15,8 +15,11 @@ Select one of the menu options below:
 1. Register a new sport
 2. Register a new member
 3. Register a new group
-4. Find a member
-5. List all members
-6. List all sports
+4. Register member into sport
+5. Register member into group
+6. Find a member
+7. List all members
+8. List all sports
+9. List all groups
 0. Exit program (and save data)
 
