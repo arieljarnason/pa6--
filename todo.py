@@ -1,5 +1,31 @@
 TODO:
 
+
+search members by birthdate!
+
+- prenta lista af sport objects og str: 
+name of sport
+ -- member name + age
+ -- member name + age
+
+ - Groups:
+User shall be able to register groups in each sport
+#     Variables:
+#     --Group name
+#     --Age range
+
+    # --When signing a user up for a sport a group must be selected
+    --Only groups for correct age available
+    --Possible to sign into more than one group, if age allows
+    
+    # --User should be able to select a group and see details
+    # --List of users in a group
+    # --When viewing details on a user the sport and 
+    # --group should be displayed in list
+
+    
+
+
 # - Tengja sport objects við lista af notendum
 
 
@@ -9,37 +35,12 @@ TODO:
 
 # - Tengja sport við groups
 
-Fix so when new group / sport / user is made, it connects correctly and saves 
-correctly.
-
-
-- prenta lista af sport objects og str: 
-name of sport
- -- member name + age
- -- member name + age
- -- member name + age
- -- member name + age
-
-- Edit member: remove from sport - remove from group
-
-- Groups:
-User shall be able to register groups in each sport
-#     Variables:
-#     --Group name
-#     --Age range
-
-    --When signing a user up for a sport a group must be selected
-    --Only groups for correct age available
-    --Possible to sign into more than one group, if age allows
-    
+# Fix so when new group / sport / user is made, it connects correctly and saves 
+# correctly.
 
 
 
-    --User should be able to select a group and see details
-    # --List of users in a group
-    # --When viewing details on a user the sport and 
-    # --group should be displayed in list
-
+# - Edit member: remove from sport - remove from group
 
 
 

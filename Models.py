@@ -25,6 +25,7 @@ class Member:
         self.unique_id = unique_id
     
     def __str__(self):
+        
         try:
             sport_string = PrintGraphicsUI.make_string(self.sports)
         except TypeError:
@@ -47,35 +48,35 @@ class Sport:
     """Makes the Sport object"""
     def __init__(
         self, 
-        sport_name, 
+        name, 
         sport_members = None,
         sport_groups = None
         ):
 
-        self.sport_name = sport_name
+        self.name = name
         self.sport_members = sport_members
         self.sport_groups = sport_groups
     
 
     def __str__(self):
-        # return "{} ({}) -- Groups: {}".format(self.sport_name, len(self.sport_members), self.sport_groups)
-        return self.sport_name
+        # return "{} ({}) -- Groups: {}".format(self.name, len(self.sport_members), self.sport_groups)
+        return self.name
 
-    # def __repr__(self):
-    #     return self.sport_name
+    def __repr__(self):
+        return self.name
 
 class Group:
     """Makes Group objects"""
     def __init__(
         self,
-        group_name,
+        name,
         group_size,
         group_age_range,
         group_sport = None,
         group_members = None,
         group_waiting_list = None):
 
-            self.group_name = group_name
+            self.name = name
             self.group_size = group_size
             self.group_age_range = group_age_range
             self.group_sport = group_sport
@@ -84,11 +85,11 @@ class Group:
 
     def __str__(self):
         # return "{}........................{}..........{}...........{}".format(
-        #     self.group_name,
+        #     self.name,
         #     self.group_size,
         #     self.group_age_range,
         #     self.group_sport)
-        return self.group_name
+        return self.name
         
     def __repr__(self):
-        return self.group_name
+        return self.name

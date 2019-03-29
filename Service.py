@@ -24,9 +24,7 @@ class MemberList:
         self.name_map = SortedDict()
         self.phone_map = dict()
         self.email_map = SortedDict()
-
         self.unique_id = int(MemberRepo.load_un_id())
-
 
     def add_new_member(self, new_member):
         self.id_map[self.unique_id] = new_member
@@ -34,8 +32,7 @@ class MemberList:
         self.phone_map[new_member.phone] = self.unique_id
         self.email_map[new_member.email] = self.unique_id
 
-
-        print("{} added to system. You will be redirected to main menu.".format(new_member.name))
+        print("{} added to system.".format(new_member.name))
         self.unique_id += 1
         MemberRepo.save(self.id_map, self.name_map, self.phone_map, self.email_map)
         MemberRepo.save_un_id(self.unique_id)
@@ -54,10 +51,21 @@ class MemberList:
             except ValueError:
                 print("Error! Only write a number!")
 
-        new_member = Member(member_name, member_phone, member_email, member_birthyear,[], None, self.unique_id)
+        new_member = Member(member_name, member_phone, member_email, member_birthyear,[], [], self.unique_id)
         self.add_new_member(new_member)
-        # self.sport_map[new_member.sports]
+        return new_member
 
+        """
+        -Kalla á fall sem skráir meðlim í sport 
+        -kallar á annað föll sem að:
+        group -> sport
+        member -> sport
+        sport -> group
+        member -> group
+        group -> member
+        sport -> member
+        
+        """
 
     def search(self, search_term):
         if search_term in self.name_map:
@@ -122,6 +130,7 @@ class MemberList:
         del self.email_map[selected_member.email]
         del self.id_map[id]
 
+
         self.save_all_files()
 
 
@@ -132,7 +141,7 @@ class MemberList:
     def load_all_files(self):
         try:
             self.id_map, self.name_map, self.phone_map, self.email_map = MemberRepo.load()
-            print(self.id_map)
+            # print(self.id_map)
             # print(self.name_map)
 
         except TypeError:
@@ -146,18 +155,18 @@ class MemberList:
 
     def test(self):
         self.add_new_member(Member("Karl Bernharðsson", "898-8787", "1@sport.is", 1989, [], [], 1))
-        self.add_new_member(Member("Sigurður Sigurðsson", "844-8484", "2@sport.is", 1994, [], [], 2))
-        self.add_new_member(Member("Magnús Friðriksson", "898-4111", "3@sport.is", 1993, [], [], 3))
-        self.add_new_member(Member("Elísabet Skaargard", "778-1155", "4@sport.is", 1992, [], [], 4))
-        self.add_new_member(Member("Knútur Olsen", "877-1588", "5@sport.is", 1993, [], [], 5))
-        self.add_new_member(Member("Sigrún Tinnudóttir", "677-8877", "6@sport.is", 1992, [], [], 6))
-        self.add_new_member(Member("Jón Karlsson", "661-8488", "7@sport.is", 1993, [], [], 7))
-        self.add_new_member(Member("Geir Sigurður Magnússon", "771-2121", "8@sport.is", 1995, [], [], 8))
-        self.add_new_member(Member("Bertrand Filibusarson", "771-2121", "8@sport.is", 1995, [], [], 9))
-        self.add_new_member(Member("Not0", "771-2121", "8@sport.is", 1998, [], [], 10))
-        self.add_new_member(Member("Not1", "771-2121", "8@sport.is", 1994, [], [], 11))
-        self.add_new_member(Member("Not2", "771-2121", "8@sport.is", 1992, [], [], 12))
-        self.add_new_member(Member("Not3", "771-2121", "8@sport.is", 1997, [], [], 13))
+        self.add_new_member(Member("Sigurður Sigurðsson", "844-8484", "2@sport.is", 2000, [], [], 2))
+        self.add_new_member(Member("Magnús Friðriksson", "898-4111", "3@sport.is", 2001, [], [], 3))
+        self.add_new_member(Member("Elísabet Skaargard", "778-1155", "4@sport.is", 2002, [], [], 4))
+        self.add_new_member(Member("Knútur Olsen", "877-1588", "5@sport.is", 2000, [], [], 5))
+        self.add_new_member(Member("Sigrún Tinnudóttir", "677-8877", "6@sport.is", 2010, [], [], 6))
+        self.add_new_member(Member("Jón Karlsson", "661-8488", "7@sport.is", 2011, [], [], 7))
+        self.add_new_member(Member("Geir Sigurður Magnússon", "771-2126", "8@sport.is", 2010, [], [], 8))
+        self.add_new_member(Member("Bertrand Filibusarson", "771-2125", "9@sport.is", 2000, [], [], 9))
+        self.add_new_member(Member("Notandi0", "771-2121", "10@sport.is", 2005, [], [], 10))
+        self.add_new_member(Member("Notandi01", "771-2122", "11@sport.is", 1994, [], [], 11))
+        self.add_new_member(Member("Notandi02", "771-2123", "12@sport.is", 1992, [], [], 12))
+        self.add_new_member(Member("Notandi03", "771-2124", "13@sport.is", 1997, [], [], 13))
         
 # # 
 # # 
@@ -166,20 +175,19 @@ class MemberList:
 # #   
 
 
-
 class SportList:
     def __init__(self):
         self.sport_map = SortedDict()
 
     def new_sport(self):
-        sport_name = input("Input sport Name (Football): ")
-        new_sport = Sport(sport_name)
+        name = input("Input sport Name (Football): ")
+        new_sport = Sport(name)
         self.add_new_sport(new_sport)
 
     def add_new_sport(self, new_sport):
         #Makes sport map that has key: [name] = value: sport_object
-        self.sport_map[new_sport.sport_name] = new_sport
-        print("{} added to system. You will be redirected to main menu.".format(new_sport.sport_name))
+        self.sport_map[new_sport.name] = new_sport
+        print("{} added to system. You will be redirected to main menu.".format(new_sport.name))
         SportsRepo.save(self.sport_map)
 
 
@@ -189,7 +197,7 @@ class SportList:
     def load_all_files(self):
         try:
             self.sport_map = SportsRepo.load()
-            print(self.sport_map)
+            # print(self.sport_map)
         except TypeError:
             print("TypeError")
         
@@ -205,6 +213,7 @@ class SportList:
         self.add_new_sport(Sport("Football", [], []))
         self.add_new_sport(Sport("Volleyball", [], []))
         self.add_new_sport(Sport("Chess", [], []))
+        self.add_new_sport(Sport("Swimming", [], []))
 
 # 
 # 
@@ -221,7 +230,7 @@ class GroupList:
         self.group_map = SortedDict()
 
     def create_new_group(self):
-        group_name = input("Input group name: ")
+        name = input("Input group name: ")
         try:
             group_size = input("Decide how big the group shall be: (number) ")
             #tuple of two integers, ages from (12,14)
@@ -233,11 +242,11 @@ class GroupList:
         except (ValueError, TypeError, IndexError):
             PrintGraphicsUI.print_sel_error()
         
-        new_group = Group(group_name, group_size, group_age_range)
+        new_group = Group(name, group_size, group_age_range)
         self.add_new_group(new_group)
 
     def add_new_group(self, new_group):
-        self.group_map[new_group.group_name] = new_group
+        self.group_map[new_group.name] = new_group
         GroupRepo.save(self.group_map)
         print("Group was added. Returning to Main Menu.")
         time.sleep(0.4)
@@ -254,7 +263,7 @@ class GroupList:
     def load_all_files(self):
         try:
             self.group_map = GroupRepo.load()
-            print(self.group_map)
+            # print(self.group_map)
         except TypeError:
             print("TypeError")
 
@@ -263,4 +272,5 @@ class GroupList:
         self.add_new_group(Group("Fjölnir", 10, (10,12), None, [], []))
         self.add_new_group(Group("Ármann", 12, (12,14), None, [], []))
         self.add_new_group(Group("Breiðablik", 6, (20,26), None, [], []))
+        self.add_new_group(Group("Fylkir", 80, (5,99), None, [], []))
 
