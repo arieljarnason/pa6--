@@ -23,6 +23,7 @@ class Member:
         self.sports = sports
         self.groups = groups
         self.unique_id = unique_id
+        self.age = (datetime.date.today().year) - self.birthyear
     
     def __str__(self):
         
@@ -31,11 +32,10 @@ class Member:
         except TypeError:
             sport_string = ""
             
-        age = (datetime.date.today().year) - self.birthyear
         
         return "{:<26s} {:12s} {:12s}{:<12s}{:6s}{:>4}".format(
             self.name,
-            str(age),
+            str(self.age),
             self.phone,
             self.email,
             str(self.unique_id),
@@ -46,23 +46,7 @@ class Member:
 
 class Sport:
     """Makes the Sport object"""
-    class Group:
-        def __init__(
-            self,
-            name,
-            age_range,
-            members = None,
-            waiting_list = None
-        ):
-        self.name = name
-        self.age_range = age_range
-        self.members = members
-        self.waiting_list = waiting_list
     
-        def __str__(self):
-            return (self.name, self.age_range)
-            
-
     def __init__(
         self, 
         name, 
@@ -82,7 +66,39 @@ class Sport:
     def __repr__(self):
         return self.name
 
+class Group:
+        def __init__(
+            self,
+            name,
+            size,
+            age_range,
+            member_count,
+            members = None,
+            waiting_list = None
+            ):
+            self.name = name
+            self.size = size
+            self.age_range = age_range
+            self.member_count = member_count
+            self.members = members
+            self.waiting_list = waiting_list
+    
+        def __str__(self):
+            if self.size == self.member_count:
+                return "{}({} / {} FULL)".format(self.name, self.member_count, self.size)
+            else:
+                return "{}({} / {})".format(self.name, self.member_count, self.size)
 
+        def __repr__(self):
+            return "{}({} / {})".format(self.name, self.member_count, self.size)
+            
+
+        #weird check doesnt work
+        # def group_is_full(self):
+        #     if self.size == self.member_count:
+        #         return True
+        #     else:
+        #         return False
 
 
 

@@ -19,6 +19,5 @@ Select one of the menu options below:
 6. Find a member
 7. List all members
 8. List all sports
-9. List all groups
 0. Exit program (and save data)
 

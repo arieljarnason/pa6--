@@ -22,7 +22,6 @@ class PrintGraphicsUI:
 
     def member_profile(found_member):
         sport_string = PrintGraphicsUI.make_string(found_member.sports)
-        group_string = PrintGraphicsUI.make_string(found_member.groups)
         print( """
 {}{}
 {}{}
@@ -36,7 +35,7 @@ class PrintGraphicsUI:
             "\tEmail:      -------------------------   ", found_member.email,
             "\tBirthyear:  -------------------------   ", found_member.birthyear, 2019-found_member.birthyear,
             "\tSports:     -------------------------   ", sport_string,
-            "\tGroups:     -------------------------   ", group_string,
+            "\tGroups:     -------------------------   ", found_member.groups,
 
             ))
 
@@ -45,10 +44,34 @@ class PrintGraphicsUI:
         time.sleep(1.5)
 
     def sport_information(selected_sport):
-        print(selected_sport)
-    
-    def group_info(selected_group):
-        print(selected_group)
+        # member_string = PrintGraphicsUI.make_string(selected_sport.sport_members)
+        # group_string = PrintGraphicsUI.make_string(selected_sport.sport_groups)
+        group_list = []
+        for group in selected_sport.sport_groups:
+            group_list.append(selected_sport.sport_groups[group])
+
+        print("Sport: {}".format(selected_sport.name))
+        print("\nGroups:")
+        for i in group_list:
+            print(i)
+        print("\nMembers:")
+        for i in selected_sport.sport_members:
+            print(i)
+
+
+# {}{}
+# {}
+# {}{}
+# {}
+# {}{}
+# """.format(
+#             "\tSport:       -------------------------   ", selected_sport.name, 
+#             "\tGroups:",
+#             "\t",group_list,
+#             "\tMembers:",
+#             "\t", selected_sport.sport_members
+
+#             ))
     
     def oops():
         print("Oops! Something went wrong. Please try again.")

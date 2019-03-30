@@ -3,10 +3,11 @@ import datetime
 import os
 from Repo import MemberRepo
 from Repo import SportsRepo
-from Repo import GroupRepo
+# from Repo import GroupRepo
+from Models import Member
 from Models import Sport
 from Models import Group
-from Models import Member
+
 from PrintGraphicsUI import PrintGraphicsUI
 from sortedcontainers import SortedDict
 
@@ -26,17 +27,6 @@ class MemberList:
         self.email_map = SortedDict()
         self.unique_id = int(MemberRepo.load_un_id())
 
-    def add_new_member(self, new_member):
-        self.id_map[self.unique_id] = new_member
-        self.name_map[new_member.name] = self.unique_id
-        self.phone_map[new_member.phone] = self.unique_id
-        self.email_map[new_member.email] = self.unique_id
-
-        print("{} added to system.".format(new_member.name))
-        self.unique_id += 1
-        MemberRepo.save(self.id_map, self.name_map, self.phone_map, self.email_map)
-        MemberRepo.save_un_id(self.unique_id)
-        time.sleep(0.1)
 
     def new_member(self):
         member_name = input("Input member Name (Jón Jónsson): ")
@@ -54,6 +44,18 @@ class MemberList:
         new_member = Member(member_name, member_phone, member_email, member_birthyear,[], [], self.unique_id)
         self.add_new_member(new_member)
         return new_member
+
+    def add_new_member(self, new_member):
+        self.id_map[self.unique_id] = new_member
+        self.name_map[new_member.name] = self.unique_id
+        self.phone_map[new_member.phone] = self.unique_id
+        self.email_map[new_member.email] = self.unique_id
+
+        print("{} added to system.".format(new_member.name))
+        self.unique_id += 1
+        self.save_all_files()
+        MemberRepo.save_un_id(self.unique_id)
+        time.sleep(0.1)
 
         """
         -Kalla á fall sem skráir meðlim í sport 
@@ -124,7 +126,7 @@ class MemberList:
                 pass
     
     def member_delete(self, selected_member):
-        id = self.name_map[selected_member.name]
+        id = selected_member.unique_id
         del self.name_map[selected_member.name]
         del self.phone_map[selected_member.phone]
         del self.email_map[selected_member.email]
@@ -141,8 +143,6 @@ class MemberList:
     def load_all_files(self):
         try:
             self.id_map, self.name_map, self.phone_map, self.email_map = MemberRepo.load()
-            # print(self.id_map)
-            # print(self.name_map)
 
         except TypeError:
             print("TypeError")
@@ -189,6 +189,33 @@ class SportList:
         self.sport_map[new_sport.name] = new_sport
         print("{} added to system. You will be redirected to main menu.".format(new_sport.name))
         SportsRepo.save(self.sport_map)
+    
+    def new_group(self, sport_of_group):
+        name = input("Write name of new group: ")
+        try:
+            group_size = input("Decide how big the group shall be: (number) ")
+            #tuple of two integers, ages from (12,14)
+            group_age_range_l = int(input("Ages ranging from: (number) "))
+            group_age_range_h = int(input("to: (number) "))
+
+            group_age_range = (group_age_range_l, group_age_range_h)
+
+        except (ValueError, TypeError, IndexError):
+            PrintGraphicsUI.oops()
+        
+        new_group = Group(name, group_size, group_age_range, 0, [], [])
+        self.add_new_group(new_group, sport_of_group)
+
+
+        return new_group #for when member makes new group to add to member?
+
+
+    def add_new_group(self, new_group, sport_of_group):
+        sport_of_group.sport_groups[new_group.name] = new_group
+        self.save_all_files()
+        print("Group was added. Returning to Main Menu.")
+        time.sleep(0.4)
+
 
 
     def save_all_files(self):
@@ -210,12 +237,26 @@ class SportList:
         # return self.sport_map
 
     def test(self):
-        self.add_new_sport(Sport("Football", [], []))
-        self.add_new_sport(Sport("Volleyball", [], []))
-        self.add_new_sport(Sport("Chess", [], []))
-        self.add_new_sport(Sport("Swimming", [], []))
+        self.add_new_sport(Sport("Football", [], {}))
+        self.add_new_sport(Sport("Volleyball", [], {}))
+        self.add_new_sport(Sport("Chess", [], {}))
+        self.add_new_sport(Sport("Swimming", [], {}))
 
+        # self.add_new_group
+    def group_test(self):
+        self.add_new_group(Group("Beginners (Foo)", 16, (6,12), 2, [], []), self.sport_map["Football"])
+        self.add_new_group(Group("Intermediate (Foo)", 10, (12,16), 1, [], []), self.sport_map["Football"])
+        self.add_new_group(Group("Pro (Foo)", 6, (16,35), 4, [], []), self.sport_map["Football"])
 
+        self.add_new_group(Group("Beginners (Voll)", 16, (6,12), 2, [], []), self.sport_map["Volleyball"])
+        self.add_new_group(Group("Intermediate (Voll)", 10, (10,33), 2, [], []), self.sport_map["Volleyball"])
+
+        self.add_new_group(Group("Everybody (Che)", 30, (6,99), 5, [], []), self.sport_map["Chess"])
+
+        self.add_new_group(Group("Beginners (Swi)", 16, (6,12), 1, [], []), self.sport_map["Swimming"])
+        self.add_new_group(Group("Intermediate (Swi)", 10, (10,20), 0, [], []), self.sport_map["Swimming"])
+        print("test success")
+        time.sleep(1.0)
 
 
 # class GroupList:
@@ -224,21 +265,7 @@ class SportList:
 #     def __init__(self):
 #         self.group_map = SortedDict()
 
-#     def create_new_group(self):
-#         name = input("Input group name: ")
-#         try:
-#             group_size = input("Decide how big the group shall be: (number) ")
-#             #tuple of two integers, ages from (12,14)
-#             group_age_range_l = int(input("Ages ranging from: (number) "))
-#             group_age_range_h = int(input("to: (number) "))
-
-#             group_age_range = (group_age_range_l, group_age_range_h)
-
-#         except (ValueError, TypeError, IndexError):
-#             PrintGraphicsUI.print_sel_error()
-        
-#         new_group = Group(name, group_size, group_age_range)
-#         self.add_new_group(new_group)
+#     
 
 #     def add_new_group(self, new_group):
 #         self.group_map[new_group.name] = new_group

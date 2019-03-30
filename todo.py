@@ -1,5 +1,16 @@
 TODO:
 
+GROUPS REHAUL
+
+sko
+2 groups per sport
+6 total
+
+each group has age range
+each group is only in 1 sport, subset of sport
+
+
+
 
 search members by birthdate!
 
