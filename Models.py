@@ -46,6 +46,23 @@ class Member:
 
 class Sport:
     """Makes the Sport object"""
+    class Group:
+        def __init__(
+            self,
+            name,
+            age_range,
+            members = None,
+            waiting_list = None
+        ):
+        self.name = name
+        self.age_range = age_range
+        self.members = members
+        self.waiting_list = waiting_list
+    
+        def __str__(self):
+            return (self.name, self.age_range)
+            
+
     def __init__(
         self, 
         name, 
@@ -65,31 +82,35 @@ class Sport:
     def __repr__(self):
         return self.name
 
-class Group:
-    """Makes Group objects"""
-    def __init__(
-        self,
-        name,
-        group_size,
-        group_age_range,
-        group_sport = None,
-        group_members = None,
-        group_waiting_list = None):
 
-            self.name = name
-            self.group_size = group_size
-            self.group_age_range = group_age_range
-            self.group_sport = group_sport
-            self.group_members = group_members
-            self.group_waiting_list = group_waiting_list
 
-    def __str__(self):
-        # return "{}........................{}..........{}...........{}".format(
-        #     self.name,
-        #     self.group_size,
-        #     self.group_age_range,
-        #     self.group_sport)
-        return self.name
+
+
+# class Group:
+#     """Makes Group objects"""
+#     def __init__(
+#         self,
+#         name,
+#         group_size,
+#         group_age_range,
+#         group_sport = None,
+#         group_members = None,
+#         group_waiting_list = None):
+
+#             self.name = name
+#             self.group_size = group_size
+#             self.group_age_range = group_age_range
+#             self.group_sport = group_sport
+#             self.group_members = group_members
+#             self.group_waiting_list = group_waiting_list
+
+#     def __str__(self):
+#         # return "{}........................{}..........{}...........{}".format(
+#         #     self.name,
+#         #     self.group_size,
+#         #     self.group_age_range,
+#         #     self.group_sport)
+#         return self.name
         
-    def __repr__(self):
-        return self.name
+#     def __repr__(self):
+#         return self.name

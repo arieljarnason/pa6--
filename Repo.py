@@ -50,19 +50,19 @@ class SportsRepo:
         except FileNotFoundError or TypeError:
             print('Unfortunately we could not find your save file. No data was loaded.')
 
-class GroupRepo:
-    """Gets and updates file for info on sports and groups"""
+# class GroupRepo:
+#     """Gets and updates file for info on sports and groups"""
 
-    def save(gr_map):
-        pickle.dump(gr_map, open("saves/gr_map.p", "wb"))
+#     def save(gr_map):
+#         pickle.dump(gr_map, open("saves/gr_map.p", "wb"))
 
-    def load():
-        try: 
-            gr_map = pickle.load(open("saves/gr_map.p", "rb"))
-            return gr_map
-            #nota close eða with
-        except FileNotFoundError or TypeError:
-            print('Unfortunately we could not find your save file. No data was loaded.')
+#     def load():
+#         try: 
+#             gr_map = pickle.load(open("saves/gr_map.p", "rb"))
+#             return gr_map
+#             #nota close eða with
+#         except FileNotFoundError or TypeError:
+#             print('Unfortunately we could not find your save file. No data was loaded.')
 
         
 

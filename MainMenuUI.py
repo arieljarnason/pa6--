@@ -37,9 +37,6 @@ class MainMenuUI:
         #
         #
         #
-
-
-
     #                                -----#### MAIN MENU STARTS #### -----------
 
         while action != "0":
@@ -118,14 +115,16 @@ class MainMenuUI:
                 """Prints list of all members"""
                 self.print_all_members()
 
-
             #8. List all sports - select sport and see detailed info(list of users)
             elif action == "8":
                 """Prints list of all sports"""
-                sport_list = self.print_all_sports()
-                selected_sport = self.pick_a_sport(sport_list)
-                self.sport_selected(selected_sport)
-
+                try:
+                    sport_list = self.print_all_sports()
+                    selected_sport = self.pick_a_sport(sport_list)
+                    # if selected_sport:
+                    self.sport_selected(selected_sport)
+                except (ValueError, TypeError, IndexError, AttributeError):
+                    PrintGraphicsUI.oops()
 
             #9. List all groups
             elif action == "9":
@@ -151,13 +150,15 @@ class MainMenuUI:
     def print_all_members(self):
         
         all_members = self.MemberList.get_members_ordered_by_name()
-        lower = 0; upper = 8; action = ""; loop = True; highest = len(all_members)
-
-        while loop:
+        lower = 0; upper = 8; action = ""; highest = len(all_members); action = ""
+        
+        while action != 0:
             os.system('cls' if os.name == 'nt' else 'clear')
             if all_members == []: print("No members have been registered!")
             else: 
-                print("\Members:")
+                print("-"*106)
+                print("{:>2}".format("Members:"))
+                print("-"*106)
                 print()
                 print("{:>10} {:>25s} {:>20s}{:<12s}{}{:>4}".format("Name:", "Age:", "Phone No:", "Email:", "Unique ID:", "Sports"))
                 print("-"*106)
@@ -174,9 +175,7 @@ class MainMenuUI:
                 "0. Exit"))
             
             if action == "1": #Choose to pick a member by nr
-                loop = False
                 self.pick_a_member(all_members)
-
 
             elif action == "2": #Go up
                 if lower > 0: lower -= 8
@@ -190,7 +189,7 @@ class MainMenuUI:
             elif action == "4": #Show all
                 lower = 0; upper = highest
             elif action == "0": #Exit
-                loop = False
+                return
             else: 
                 PrintGraphicsUI.print_sel_error()
 
@@ -215,7 +214,12 @@ class MainMenuUI:
             
             #1. Member Edit
             if action == "1":
-                print("1. Name\n2. Phone no\n3. Email\n4. Birthyear\n0. Exit\n")
+                print("{}\n{}\n{}\n{}\n{}\n".format(
+                "1. Name",
+                "2. Phone no",
+                "3. Email",
+                "4. Birthyear",
+                "0. Exit"))
                 print("What would you like to edit?")
 
                 new_info = self.MemberList.member_edit(found_member)
@@ -234,7 +238,9 @@ class MainMenuUI:
                 memb_id = found_member.unique_id
 
                 while subaction != 0:
-                    subaction = input("\n1.Register\n2.Unregister \n")
+                    subaction = input("\n{}\n{}\n".format(
+                        "1.Register",
+                        "2.Unregister"))
                     if subaction == "1":
                         # for idx, item in enumerate(sport_list):
                         #     print(idx+1, item.name)
@@ -270,7 +276,9 @@ class MainMenuUI:
             elif action == "3":
                 subaction = ""
                 while subaction != 0:
-                    subaction = input("\n1.Register\n2.Unregister \n")
+                    subaction = input("\n{}\n{}\n".format(
+                        "1.Register",
+                        "2.Unregister"))
                     if subaction == "1":
                         self.group_registration(found_member)
 
@@ -402,47 +410,29 @@ class MainMenuUI:
 
     def print_all_sports(self):
         ##Mögulega gera bara einn prentunarfítus?
-
         all_sports = self.SportList.get_sports()
-        # print(all_sports)
-        loop = True
-
-        while loop:
-            os.system('cls' if os.name == 'nt' else 'clear')
-            if all_sports == []: 
-                print("No sports have been registered!")
-                return None
-            else: 
-                print("\Sports:")
-                print("-"*106)
-                print()
-            for index, item in enumerate(all_sports): 
-                print("{:4s} {:}".format(str(index+1).zfill(2), item))
-            print()
-            print("-"*106)
-
-            action = input("\n{}\n{}\n".format("1. Pick from list",
-                "0. Exit"))
-            
-            if action == "1": #Choose to pick a sport by nr
-                loop = False
-                return all_sports
-                # self.pick_a_sport(all_sports)
-
-            elif action == "0": #Exit
-                loop = False
-
-            else: 
-                PrintGraphicsUI.print_sel_error()
         
+        os.system('cls' if os.name == 'nt' else 'clear')
+        if all_sports == []: 
+            print("No sports have been registered!")
+            return None
+        else: 
+            print("-"*106)
+            print("{:>2}".format("Sports:"))
+            print("-"*106)
+            print()
+        for index, item in enumerate(all_sports): 
+            print("{:4s} {:}".format(str(index+1).zfill(1), item))
+        print()
+        print("-"*106)
+        return all_sports
             
     def pick_a_sport(self, sport_list):
         """Lets you select a sport from the list above. Returns: selected sport object"""
-
         try:
             selection = input("Input sport number: ")
             if selection == "0":
-                return
+                pass
             else:
                 selected_sport = sport_list[int(selection)-1]
                 return selected_sport
@@ -464,14 +454,16 @@ class MainMenuUI:
         ##Mögulega gera bara einn prentunarfítus?
         
         all_groups = self.GroupList.get_groups()
-        # print(all_sports)
-        loop = True
+        action = ""
 
-        while loop:
+        while action != 1:
             os.system('cls' if os.name == 'nt' else 'clear')
             if all_groups == []: print("No groups have been registered!")
             else: 
-                print("\Groups:")
+                print("-"*106)
+                print("{:>2}".format("Sports:"))
+                print("-"*106)
+                print()
                 print("{:>10} {:>25s} {:>20s}{:>12s}".format("Name:", "Size:", "Age range:", "Sport:"))
 
                 print("-"*106)
@@ -481,16 +473,15 @@ class MainMenuUI:
             print()
             print("-"*106)
 
-            action = input("\n{}\n{}\n".format("1. Pick from list",
+            action = input("\n{}\n{}\n".format(
+                "1. Pick from list",
                 "0. Exit"))
             
             if action == "1": #Choose to pick a sport by nr
-                loop = False
                 return all_groups
 
             elif action == "0": #Exit
-                loop = False
-
+                return
             else: 
                 PrintGraphicsUI.print_sel_error()
 

@@ -215,62 +215,57 @@ class SportList:
         self.add_new_sport(Sport("Chess", [], []))
         self.add_new_sport(Sport("Swimming", [], []))
 
-# 
-# 
-#-----------------------GROUPLIST-----------------
-#
-#   
 
 
 
-class GroupList:
-    """Makes a list of the Groups and functions to work with groups"""
+# class GroupList:
+#     """Makes a list of the Groups and functions to work with groups"""
 
-    def __init__(self):
-        self.group_map = SortedDict()
+#     def __init__(self):
+#         self.group_map = SortedDict()
 
-    def create_new_group(self):
-        name = input("Input group name: ")
-        try:
-            group_size = input("Decide how big the group shall be: (number) ")
-            #tuple of two integers, ages from (12,14)
-            group_age_range_l = int(input("Ages ranging from: (number) "))
-            group_age_range_h = int(input("to: (number) "))
+#     def create_new_group(self):
+#         name = input("Input group name: ")
+#         try:
+#             group_size = input("Decide how big the group shall be: (number) ")
+#             #tuple of two integers, ages from (12,14)
+#             group_age_range_l = int(input("Ages ranging from: (number) "))
+#             group_age_range_h = int(input("to: (number) "))
 
-            group_age_range = (group_age_range_l, group_age_range_h)
+#             group_age_range = (group_age_range_l, group_age_range_h)
 
-        except (ValueError, TypeError, IndexError):
-            PrintGraphicsUI.print_sel_error()
+#         except (ValueError, TypeError, IndexError):
+#             PrintGraphicsUI.print_sel_error()
         
-        new_group = Group(name, group_size, group_age_range)
-        self.add_new_group(new_group)
+#         new_group = Group(name, group_size, group_age_range)
+#         self.add_new_group(new_group)
 
-    def add_new_group(self, new_group):
-        self.group_map[new_group.name] = new_group
-        GroupRepo.save(self.group_map)
-        print("Group was added. Returning to Main Menu.")
-        time.sleep(0.4)
+#     def add_new_group(self, new_group):
+#         self.group_map[new_group.name] = new_group
+#         GroupRepo.save(self.group_map)
+#         print("Group was added. Returning to Main Menu.")
+#         time.sleep(0.4)
 
-    def get_groups(self):
-        ordered_list = []
-        for group_object in self.group_map:
-            ordered_list.append(self.group_map[group_object])
-        return ordered_list
+#     def get_groups(self):
+#         ordered_list = []
+#         for group_object in self.group_map:
+#             ordered_list.append(self.group_map[group_object])
+#         return ordered_list
 
-    def save_all_files(self):
-        GroupRepo.save(self.group_map)
+#     def save_all_files(self):
+#         GroupRepo.save(self.group_map)
 
-    def load_all_files(self):
-        try:
-            self.group_map = GroupRepo.load()
-            # print(self.group_map)
-        except TypeError:
-            print("TypeError")
+#     def load_all_files(self):
+#         try:
+#             self.group_map = GroupRepo.load()
+#             # print(self.group_map)
+#         except TypeError:
+#             print("TypeError")
 
 
-    def test(self):
-        self.add_new_group(Group("Fjölnir", 10, (10,12), None, [], []))
-        self.add_new_group(Group("Ármann", 12, (12,14), None, [], []))
-        self.add_new_group(Group("Breiðablik", 6, (20,26), None, [], []))
-        self.add_new_group(Group("Fylkir", 80, (5,99), None, [], []))
+    # def test(self):
+        # self.add_new_group(Group("Fjölnir", 10, (10,12), None, [], []))
+        # self.add_new_group(Group("Ármann", 12, (12,14), None, [], []))
+        # self.add_new_group(Group("Breiðablik", 6, (20,26), None, [], []))
+        # self.add_new_group(Group("Fylkir", 80, (5,99), None, [], []))
 

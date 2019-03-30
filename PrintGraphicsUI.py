@@ -49,3 +49,7 @@ class PrintGraphicsUI:
     
     def group_info(selected_group):
         print(selected_group)
+    
+    def oops():
+        print("Oops! Something went wrong. Please try again.")
+        time.sleep(1.5)
