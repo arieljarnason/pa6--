@@ -52,12 +52,22 @@ class PrintGraphicsUI:
 
         print("Sport: {}".format(selected_sport.name))
         print("\nGroups:")
-        for i in group_list:
-            print(i)
-        print("\nMembers:")
-        for i in selected_sport.sport_members:
-            print(i)
+        for idx, i in enumerate(group_list):
+            print("{}. {}".format(idx+1, i))
+        print("\nAll Sport Members:\n")
+        # for idx, member in enumerate(selected_sport.sport_members):
+        #     print(idx, member.name)
+        print(selected_sport.sport_members)
+        print()
 
+    def group_info(selected_group):
+        print()
+        for idx, member in enumerate(selected_group.members):
+            print(idx+1, member.name)
+        
+        get_out = input("\nEnter any key to exit")
+        
+            
 
 # {}{}
 # {}

@@ -141,9 +141,10 @@ class MemberList:
         MemberRepo.save(self.id_map, self.name_map, self.phone_map, self.email_map)
 
     def load_all_files(self):
+        # load_success = True
         try:
             self.id_map, self.name_map, self.phone_map, self.email_map = MemberRepo.load()
-
+            # return load_success
         except TypeError:
             print("TypeError")
     
@@ -273,11 +274,11 @@ class SportList:
 #         print("Group was added. Returning to Main Menu.")
 #         time.sleep(0.4)
 
-#     def get_groups(self):
-#         ordered_list = []
-#         for group_object in self.group_map:
-#             ordered_list.append(self.group_map[group_object])
-#         return ordered_list
+    def get_groups(self):
+        ordered_list = []
+        for group_object in self.group_map:
+            ordered_list.append(self.group_map[group_object])
+        return ordered_list
 
 #     def save_all_files(self):
 #         GroupRepo.save(self.group_map)

@@ -85,12 +85,12 @@ class Group:
     
         def __str__(self):
             if self.size == self.member_count:
-                return "{}({} / {} FULL)".format(self.name, self.member_count, self.size)
+                return "{} ({} / {} FULL)".format(self.name, self.member_count, self.size)
             else:
-                return "{}({} / {})".format(self.name, self.member_count, self.size)
+                return "{} ({} / {})".format(self.name, self.member_count, self.size)
 
         def __repr__(self):
-            return "{}({} / {})".format(self.name, self.member_count, self.size)
+            return "{} ({} / {})".format(self.name, self.member_count, self.size)
             
 
         #weird check doesnt work
