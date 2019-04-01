@@ -1,4 +1,5 @@
 import time
+
 class PrintGraphicsUI:
     """Often used print messages can be used from here"""
 

@@ -18,5 +18,7 @@ Select one of the menu options below:
 5. Find a member
 6. List all members
 7. List all sports
+
+x. Undo last action
 0. Exit program (and save data)
 

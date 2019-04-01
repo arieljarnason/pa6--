@@ -3,6 +3,8 @@ import time
 from PrintGraphicsUI import PrintGraphicsUI
 from Service import MemberList
 from Service import SportList
+from Service import Undo
+from undo_ops import *
 
 from Models import Sport
 from Models import Member
@@ -119,6 +121,12 @@ class MainMenuUI:
                 self.sport_selected(selected_sport)
                 # except (ValueError, TypeError, IndexError, AttributeError):
                 #     PrintGraphicsUI.oops()
+            
+            #x. FOR UNDO
+            elif action == "x":
+                """Press x to undo latest actions for: [member, sport, group]"""
+                self.undo_ops()
+                self.save_all()
 
             #0. Save & Exit
             elif action == "0":
@@ -129,7 +137,40 @@ class MainMenuUI:
 
     #                                -----#### MAIN MENU ENDS #### -----------
 
-
+    def undo_ops(self):
+            undo = Undo.undo_stack
+            if len(undo) <= 0:
+                print("No more undo's available")
+                return None
+            op = undo.pop()
+            # Conditionals for possible undo's
+            # --- [ MEMBERS ] ---
+            if op.op_type == OpType.ADD_MEMBER:
+                print(f"Add member: {op.data}")
+                self.MemberList.add_new_member(op.data)
+            elif op.op_type == OpType.DELETE_MEMBER:
+                print(f"Delete member: {op.data}")
+                self.MemberList.member_delete(op.data)
+            # # --- [ SPORTS ] ---
+            if op.op_type == OpType.ADD_SPORT:
+                print(f"Add sport: {op.data}")
+                self.SportList.add_new_sport(op.data)
+            elif op.op_type == OpType.DELETE_SPORT:
+                print(f"Delete sport: {op.data}")
+                self.SportList.remove_sport(op.data)
+            # # --- [ GROUPS ] ---
+            if op.op_type == OpType.ADD_GROUP:
+                print(f"Add group: {op.data}")
+                self.SportList.add_new_group(op.data, op.extra)
+                self.save_all()
+            elif op.op_type == OpType.DELETE_GROUP:
+                print(f"Delete group: {op.data}")
+                self.SportList.remove_group(op.data, op.extra)
+                self.save_all()
+            elif op.op_type == OpType.UPDATE:
+                pass
+            else:
+                return None
 
     #                                ----#### PRINT FUNCTIONS #### ----------
 

@@ -1,24 +1,28 @@
 import time
 import datetime
 import os
+from sortedcontainers import SortedDict
+
 from Repo import MemberRepo
 from Repo import SportsRepo
-# from Repo import GroupRepo
 from Models import Member
 from Models import Sport
 from Models import Group
+from undo_ops import *
 
 from PrintGraphicsUI import PrintGraphicsUI
-from sortedcontainers import SortedDict
 
 # 
 # 
 #-----------------------MEMBERLIST-----------------
 #
 #   
+class Undo:
+    """Create a stack to keep track of actions"""
+    undo_stack = []
 
 
-class MemberList:
+class MemberList(Undo):
 
     def __init__(self):
         self.id_map = SortedDict()
@@ -41,8 +45,20 @@ class MemberList:
             except ValueError:
                 print("Error! Only write a number!")
 
-        new_member = Member(member_name, member_phone, member_email, member_birthyear,[], [], self.unique_id)
+        new_member = Member(
+            member_name, 
+            member_phone, 
+            member_email, 
+            member_birthyear,[], [], 
+            self.unique_id)
         self.add_new_member(new_member)
+        #== [ UNDO OP ] =============================================
+        save_op = OpInfo(OpType.DELETE_MEMBER, new_member)
+        self.undo_stack.append(save_op)
+        for op in self.undo_stack:
+            # print(f'Op Type: {op.op_type} - Op object: {op.data}')
+            print(f'Op Type: {op.op_type} -> Object pointer: {op.data}')
+        #== [ END UNDO ] ============================================
         return new_member
 
     def add_new_member(self, new_member):
@@ -91,6 +107,10 @@ class MemberList:
                 new_name = input("Please write new name: ")
                 self.name_map[new_name] = self.name_map.pop(selected_member.name)
                 selected_member.name = new_name
+                # #== [ UNDO OP ] =============================================
+                save_op = OpInfo(OpType.UPDATE, new_name, selected_member)
+                self.undo_stack.append(save_op)
+                # #== [ END UNDO ] ============================================
                 return new_name
             
             #If 2 - change Phone No.
@@ -98,6 +118,10 @@ class MemberList:
                 new_phone = input("Please write new phone (xxx-xxxx): ")
                 self.phone_map[new_phone] = self.phone_map.pop(selected_member.phone)
                 selected_member.phone = new_phone
+                # #== [ UNDO OP ] =============================================
+                save_op = OpInfo(OpType.UPDATE, new_phone, selected_member)
+                self.undo_stack.append(save_op)
+                # #== [ END UNDO ] ============================================
                 return new_phone
             
             #If 3 - change Email
@@ -105,12 +129,20 @@ class MemberList:
                 new_email = input("Please write new email: ")
                 self.email_map[new_email] = self.email_map.pop(selected_member.email)
                 selected_member.email = new_email
+                # #== [ UNDO OP ] =============================================
+                save_op = OpInfo(OpType.UPDATE, new_email, selected_member)
+                self.undo_stack.append(save_op)
+                # #== [ END UNDO ] ============================================
                 return new_email
             #If 4 - change Birthyear
             elif action == "4":
                 try:
                     new_birthyear = int(input("Please write new birthyear (xxxx): "))
                     selected_member.birthyear = new_birthyear
+                    # #== [ UNDO OP ] =============================================
+                    save_op = OpInfo(OpType.UPDATE, new_birthyear, selected_member)
+                    self.undo_stack.append(save_op)
+                    # #== [ END UNDO ] ============================================
                     return new_birthyear
                 except ValueError:
                     print("Error! Only write a number!")
@@ -126,6 +158,12 @@ class MemberList:
                 pass
     
     def member_delete(self, selected_member):
+        # #== [ UNDO OP ] =============================================
+        # save_op = OpInfo(OpType.ADD_MEMBER, selected_member)
+        # self.undo_stack.append(save_op)
+        # print(self.undo_stack)
+        # #== [ END UNDO ] ============================================
+
         id = selected_member.unique_id
         del self.name_map[selected_member.name]
         del self.phone_map[selected_member.phone]
@@ -176,7 +214,7 @@ class MemberList:
 # #   
 
 
-class SportList:
+class SportList(Undo):
     def __init__(self):
         self.sport_map = SortedDict()
 
@@ -184,14 +222,33 @@ class SportList:
         name = input("Input sport Name (Football): ")
         new_sport = Sport(name)
         self.add_new_sport(new_sport)
+        #== [ UNDO OP ] =============================================
+        save_op = OpInfo(OpType.DELETE_SPORT, new_sport)
+        self.undo_stack.append(save_op)
+        for op in self.undo_stack:
+            print(f'Op Type: {op.op_type} -> Object pointer: {op}')
+        #== [ END UNDO ] ============================================
 
     def add_new_sport(self, new_sport):
         #Makes sport map that has key: [name] = value: sport_object
         self.sport_map[new_sport.name] = new_sport
+
         print("{} added to system. You will be redirected to main menu.".format(new_sport.name))
         SportsRepo.save(self.sport_map)
     
-    def new_group(self, sport_of_group):
+    def remove_sport(self, sport_to_remove):
+        # #== [ UNDO OP ] =============================================
+        # save_op = OpInfo(OpType.ADD, sport_to_remove)
+        # self.undo_stack.append(save_op)
+        # print(self.undo_stack)
+        # #== [ END UNDO ] ============================================
+        del self.sport_map[sport_to_remove.name]
+        self.save_all_files()
+        print("Sport was removed.")
+        time.sleep(0.4)
+
+    def new_group(self, selected_sport):
+        """Takes in selected sport"""
         name = input("Write name of new group: ")
         try:
             group_size = input("Decide how big the group shall be: (number) ")
@@ -205,19 +262,33 @@ class SportList:
             PrintGraphicsUI.oops()
         
         new_group = Group(name, group_size, group_age_range, 0, [], [])
-        self.add_new_group(new_group, sport_of_group)
+        self.add_new_group(new_group, selected_sport)
 
+        #== [ UNDO OP ] =============================================
+        save_op = OpInfo(OpType.DELETE_GROUP, new_group, selected_sport)
+        self.undo_stack.append(save_op)
+        for op in self.undo_stack:
+            print(f'Op Type: {op.op_type} -> Object pointer: {op}')
+        #== [ END UNDO ] ============================================
 
         return new_group #for when member makes new group to add to member?
 
 
-    def add_new_group(self, new_group, sport_of_group):
-        sport_of_group.sport_groups[new_group.name] = new_group
+    def add_new_group(self, new_group, selected_sport):
+        """Add new group to the selected sport"""
+        selected_sport.sport_groups[new_group.name] = new_group
         self.save_all_files()
         print("Group was added. Returning to Main Menu.")
         time.sleep(0.4)
 
-
+    def remove_group(self, group_to_remove, selected_sport):
+        to_remove = selected_sport.sport_groups[group_to_remove.name]
+        del selected_sport.sport_groups[group_to_remove.name]
+        self.save_all_files()
+        print(f'Group "{to_remove}" was removed.')
+        # print(f'Get all sport map: {self.sport_map}')
+        # print(f'Get all sportslist: {self.get_sports()}')
+        time.sleep(0.4)
 
     def save_all_files(self):
         SportsRepo.save(self.sport_map)
