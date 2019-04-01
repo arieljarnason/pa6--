@@ -1,0 +1,3 @@
+mylist = [1,4,5,8]
+
+mylist.remove(1)

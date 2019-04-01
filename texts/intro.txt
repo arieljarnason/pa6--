@@ -1,0 +1,24 @@
+ __                  _             _____ _____ 
+/ _\_ __   ___  _ __| |_ _   _     \_   \\_   \
+\ \| '_ \ / _ \| '__| __| | | |     / /\/ / /\/
+_\ \ |_) | (_) | |  | |_| |_| |  /\/ /_/\/ /_  
+\__/ .__/ \___/|_|   \__|\__, |  \____/\____/  
+   |_|                   |___/                   
+
+
+With Sporty II you can register data about sports, 
+groups and members in your sports club.
+
+Select one of the menu options below:
+
+1. Register a new member
+2. Register a new sport
+3. Register a new group
+4. Register member into sport or group
+5. Find a member
+6. List all members
+7. List all sports
+
+x. Undo last action
+0. Exit program (and save data)
+
