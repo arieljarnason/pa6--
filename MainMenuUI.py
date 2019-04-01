@@ -94,11 +94,15 @@ class MainMenuUI:
             #3. Register new group
             elif action == "3":
                 #first select sport
-                print("You must first select a sport.")
-                time.sleep(1.5)
-                sport_list = self.print_all_sports()
-                selected_sport = self.pick_a_sport(sport_list)
-                self.SportList.new_group(selected_sport)
+                try:
+                    print("You must first select a sport.")
+                    time.sleep(1.5)
+                    sport_list = self.print_all_sports()
+                    selected_sport = self.pick_a_sport(sport_list)
+                    self.SportList.new_group(selected_sport)
+                except (ValueError, TypeError, IndexError, AttributeError):
+                    PrintGraphicsUI.oops()
+                    print("Perhaps sports have been registered!")
 
             #4. Register member into sport
             elif action == "4":
@@ -125,13 +129,15 @@ class MainMenuUI:
             #7. List all sports - select sport and see detailed info(list of users)
             elif action == "7":
                 """Prints list of all sports"""
-                # try:
-                sport_list = self.print_all_sports()
-                selected_sport = self.pick_a_sport(sport_list)
-                # if selected_sport:
-                self.sport_selected(selected_sport)
-                # except (ValueError, TypeError, IndexError, AttributeError):
-                #     PrintGraphicsUI.oops()
+                try:
+                    sport_list = self.print_all_sports()
+                    selected_sport = self.pick_a_sport(sport_list)
+                    # if selected_sport:
+                    self.sport_selected(selected_sport)
+                except (ValueError, TypeError, IndexError, AttributeError):
+                    PrintGraphicsUI.oops()
+                    print("No sports have been registered!")
+
             
             #x. FOR UNDO
             elif action == "x":
@@ -234,13 +240,16 @@ class MainMenuUI:
 
     def print_all_sports(self, all_sports = None):
         ##Mögulega gera bara einn prentunarfítus?
-        if all_sports == None:
-            all_sports = self.SportList.get_sports()
+        try:
+            if all_sports == None:
+                all_sports = self.SportList.get_sports()
+        except TypeError:
+            print("No sports have been registered!")
         
         # os.system('cls' if os.name == 'nt' else 'clear')
         if all_sports == []: 
             print("No sports have been registered!")
-            return None
+            return
         else: 
             print("-"*106)
             print("{:>2}".format("Sports:"))
