@@ -167,8 +167,14 @@ class MainMenuUI:
                 print(f"Delete group: {op.data}")
                 self.SportList.remove_group(op.data, op.extra)
                 self.save_all()
-            elif op.op_type == OpType.UPDATE:
-                pass
+            elif op.op_type == OpType.UPDATE_NAME:
+                self.MemberList.change_member_back(op.data, op.extra)
+            elif op.op_type == OpType.UPDATE_PHONE:
+                self.MemberList.change_phone_back(op.data, op.extra)
+            elif op.op_type == OpType.UPDATE_EMAIL:
+                self.MemberList.change_email_back(op.data, op.extra)
+            elif op.op_type == OpType.UPDATE_YEAR:
+                self.MemberList.change_birthyear_back(op.data, op.extra)
             else:
                 return None
 

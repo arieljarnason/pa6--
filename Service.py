@@ -97,7 +97,21 @@ class MemberList(Undo):
             return
         return self.id_map[id]
 
+    def change_member_back(self, old_name, selected_member):
+        self.name_map[old_name] = self.name_map.pop(selected_member.name)
+        selected_member.name = old_name
     
+    def change_phone_back(self, old_phone, selected_member):
+        self.phone_map[old_phone] = self.phone_map.pop(selected_member.phone)
+        selected_member.name = old_phone
+    
+    def change_email_back(self, old_email, selected_member):
+        self.email_map[old_email] = self.email_map.pop(selected_member.email)
+        selected_member.name = old_email
+    
+    def change_birthyear_back(self, old_year, selected_member):
+        selected_member.birthyear = old_year
+
     def member_edit(self, selected_member):
         action = ""
         while action != "0":
@@ -105,44 +119,48 @@ class MemberList(Undo):
             #If 1 - change name
             if action == "1":
                 new_name = input("Please write new name: ")
-                self.name_map[new_name] = self.name_map.pop(selected_member.name)
-                selected_member.name = new_name
                 # #== [ UNDO OP ] =============================================
-                save_op = OpInfo(OpType.UPDATE, new_name, selected_member)
+                old_name = selected_member.name
+                save_op = OpInfo(OpType.UPDATE_NAME, old_name, selected_member)
                 self.undo_stack.append(save_op)
                 # #== [ END UNDO ] ============================================
+                self.name_map[new_name] = self.name_map.pop(selected_member.name)
+                selected_member.name = new_name
                 return new_name
             
             #If 2 - change Phone No.
             elif action == "2":
                 new_phone = input("Please write new phone (xxx-xxxx): ")
-                self.phone_map[new_phone] = self.phone_map.pop(selected_member.phone)
-                selected_member.phone = new_phone
                 # #== [ UNDO OP ] =============================================
-                save_op = OpInfo(OpType.UPDATE, new_phone, selected_member)
+                old_phone = selected_member.phone
+                save_op = OpInfo(OpType.UPDATE_PHONE, old_phone, selected_member)
                 self.undo_stack.append(save_op)
                 # #== [ END UNDO ] ============================================
+                self.phone_map[new_phone] = self.phone_map.pop(selected_member.phone)
+                selected_member.phone = new_phone
                 return new_phone
             
             #If 3 - change Email
             elif action == "3":
                 new_email = input("Please write new email: ")
-                self.email_map[new_email] = self.email_map.pop(selected_member.email)
-                selected_member.email = new_email
                 # #== [ UNDO OP ] =============================================
-                save_op = OpInfo(OpType.UPDATE, new_email, selected_member)
+                old_email = selected_member.email
+                save_op = OpInfo(OpType.UPDATE_EMAIL, old_email, selected_member)
                 self.undo_stack.append(save_op)
                 # #== [ END UNDO ] ============================================
+                self.email_map[new_email] = self.email_map.pop(selected_member.email)
+                selected_member.email = new_email
                 return new_email
             #If 4 - change Birthyear
             elif action == "4":
                 try:
                     new_birthyear = int(input("Please write new birthyear (xxxx): "))
-                    selected_member.birthyear = new_birthyear
                     # #== [ UNDO OP ] =============================================
-                    save_op = OpInfo(OpType.UPDATE, new_birthyear, selected_member)
+                    old_year = selected_member.birthyear
+                    save_op = OpInfo(OpType.UPDATE_YEAR, old_year, selected_member)
                     self.undo_stack.append(save_op)
                     # #== [ END UNDO ] ============================================
+                    selected_member.birthyear = new_birthyear
                     return new_birthyear
                 except ValueError:
                     print("Error! Only write a number!")

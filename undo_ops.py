@@ -8,7 +8,10 @@ class OpType(Enum):
     DELETE_MEMBER = 4
     DELETE_SPORT = 5
     DELETE_GROUP = 6
-    UPDATE = 7
+    UPDATE_NAME = 7
+    UPDATE_PHONE = 8
+    UPDATE_EMAIL = 9
+    UPDATE_YEAR = 10
     
 
 class OpInfo:
