@@ -98,19 +98,33 @@ class MemberList(Undo):
         return self.id_map[id]
 
     def change_member_back(self, old_name, selected_member):
-        self.name_map[old_name] = self.name_map.pop(selected_member.name)
+        print(f'id map {self.id_map}')
+        name_to_change = selected_member.name
+        unique_id = self.name_map[selected_member.name]
+        self.name_map[old_name] = self.name_map.pop(name_to_change)
+        self.id_map[unique_id] = selected_member
         selected_member.name = old_name
+        self.save_all_files()
     
     def change_phone_back(self, old_phone, selected_member):
-        self.phone_map[old_phone] = self.phone_map.pop(selected_member.phone)
+        phone_to_change = selected_member.phone
+        unique_id = selected_member.phone
+        self.phone_map[old_phone] = self.phone_map.pop(phone_to_change)
+        self.id_map[unique_id] = selected_member
         selected_member.name = old_phone
+        self.save_all_files()
     
     def change_email_back(self, old_email, selected_member):
-        self.email_map[old_email] = self.email_map.pop(selected_member.email)
+        email_to_change = selected_member.email
+        unique_id = selected_member.email
+        self.email_map[old_email] = self.email_map.pop(email_to_change)
+        self.id_map[unique_id] = selected_member
         selected_member.name = old_email
+        self.save_all_files()
     
     def change_birthyear_back(self, old_year, selected_member):
         selected_member.birthyear = old_year
+        self.save_all_files()
 
     def member_edit(self, selected_member):
         action = ""
@@ -301,9 +315,13 @@ class SportList(Undo):
 
     def remove_group(self, group_to_remove, selected_sport):
         to_remove = selected_sport.sport_groups[group_to_remove.name]
-        del selected_sport.sport_groups[group_to_remove.name]
+        
+        my_sport = self.sport_map[selected_sport.name]
+        del my_sport.sport_groups[group_to_remove.name]
+        
         self.save_all_files()
         print(f'Group "{to_remove}" was removed.')
+        
         # print(f'Get all sport map: {self.sport_map}')
         # print(f'Get all sportslist: {self.get_sports()}')
         time.sleep(0.4)
